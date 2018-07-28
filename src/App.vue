@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
 
 <script>
+var _ = require('lodash');
 export default {
   name: 'App'
 }

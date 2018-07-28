@@ -1,113 +1,131 @@
 <template>
   <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li>
-        <a
-          href="https://vuejs.org"
-          target="_blank"
-        >
-          Core Docs
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://forum.vuejs.org"
-          target="_blank"
-        >
-          Forum
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://chat.vuejs.org"
-          target="_blank"
-        >
-          Community Chat
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://twitter.com/vuejs"
-          target="_blank"
-        >
-          Twitter
-        </a>
-      </li>
-      <br>
-      <li>
-        <a
-          href="http://vuejs-templates.github.io/webpack/"
-          target="_blank"
-        >
-          Docs for This Template
-        </a>
-      </li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li>
-        <a
-          href="http://router.vuejs.org/"
-          target="_blank"
-        >
-          vue-router
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vuex.vuejs.org/"
-          target="_blank"
-        >
-          vuex
-        </a>
-      </li>
-      <li>
-        <a
-          href="http://vue-loader.vuejs.org/"
-          target="_blank"
-        >
-          vue-loader
-        </a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-        >
-          awesome-vue
-        </a>
-      </li>
-    </ul>
+    <template>
+               <el-dropdown @command="handleCityCommand">
+           <span class="el-dropdown-link">
+            城市<i class="el-icon-arrow-down el-icon--right"></i>
+           </span>
+           <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command=1>北京</el-dropdown-item>
+            <el-dropdown-item command=2>南京</el-dropdown-item>
+          </el-dropdown-menu>
+         </el-dropdown>
+                    <el-table
+                      :data="tableData"
+                      style="width: 100%">
+                      <el-table-column
+                        prop="city"
+                        label="城市"
+                        :render-header="renderCity"
+                        >
+                      </el-table-column>
+                      <el-table-column
+                        prop="name"
+                        label="姓名">
+                      </el-table-column>
+                      <el-table-column
+                        prop="address"
+                        label="地址">
+                      </el-table-column>
+                      
+                </el-table>
+</template>
   </div>
 </template>
 
 <script>
-export default {
-  name: 'HelloWorld',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+  export default {
+    name: 'HelloWorld',
+    mounted() {
+  
+      //this.createSomething(this.commandCityList)
+  
+    },
+    data() {
+      return {
+  
+        spanCity: "城市",
+        commandCityList: {
+          1: "北京",
+          2: "南京"
+        },
+        tableData: [{
+          city: '北京',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1518 弄',
+  
+        }, {
+          city: '北京',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1517 弄',
+  
+        }, {
+          city: '南京',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1519 弄',
+  
+        }, {
+          city: '南京',
+          name: '王小虎',
+          address: '上海市普陀区金沙江路 1516 弄',
+  
+        }]
+      }
+    },
+    methods: {
+      renderCity(createElement, {
+        column,
+        $index
+      }) {
+        return this.createDropdownColumnTitle(createElement, this.spanCity, this.commandCityList, this.handleCityCommand)
+      },
+      handleCityCommand(command) {
+        console.log(command);
+      },
+      createDropdownColumnTitle(createElement, spanWord, commandList, handleCommand) {
+        let dropdownMenu = []
+        for (let key in commandList) {
+          dropdownMenu.push(createElement(
+            'el-dropdown-item', {
+              props: {
+                command: key
+              }
+            },
+            commandList[key]
+          ))
+        }
+        return createElement(
+          'el-dropdown', {
+            on: {
+              command: handleCommand
+            }
+          }, [
+            createElement(
+              'span', {
+                'class': 'el-dropdown-link'
+              }, [
+                spanWord,
+                createElement(
+                  'i', {
+                    'class': "el-icon-arrow-down el-icon--right"
+                  }
+                )
+              ]
+            ),
+            createElement(
+              'el-dropdown-menu', {
+                slot: "dropdown"
+              },
+              dropdownMenu
+            )
+          ]
+        )
+      },
     }
   }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
-}
+  
 </style>
